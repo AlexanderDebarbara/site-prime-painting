@@ -1,106 +1,146 @@
 # Prime Painting
 
-Site estático em inglês, feito com HTML, CSS e JavaScript, pronto para deploy direto pelo Git. Sem PHP, banco de dados, dependências de produção ou build obrigatório.
+Site institucional da **Prime Painting**, empresa de pintura residencial e comercial da região central da Flórida. O conteúdo público está em inglês.
 
-## Publicação pelo Git
+Desenvolvido em **HTML, CSS e JavaScript**, com imagens locais em WebP. O site funciona como arquivos estáticos, sem PHP, banco de dados, dependências de produção ou build obrigatório.
 
-Os arquivos públicos já estão na raiz do repositório. Configure sua integração de deploy para publicar essa raiz no diretório do site (`public_html` na hospedagem):
+## Executar localmente
 
-- **Branch:** a mesma enviada ao remoto; a branch atual é `master`.
-- **Diretório do site:** raiz do repositório (`.`).
-- **Comando de instalação:** nenhum.
-- **Comando de build:** nenhum.
-- **Página inicial:** `index.html`.
-
-Mantenha `index.html`, `privacy.html`, `styles.css`, `script.js`, `robots.txt`, `.htaccess` e `assets/` juntos. As imagens e a logo usadas pelo site estão incluídas no repositório.
-
-Não é necessário enviar ZIPs nem versionar `dist/`. A integração entre o repositório e a hospedagem deve ser configurada na sua conta; este projeto não executa deploy remoto sozinho.
-
-Se já publicou a versão PHP anterior, remova os antigos `index.php` e `privacy.php` da hospedagem após fazer backup. O Git não remove arquivos externos que nunca foram rastreados pelo repositório.
-
-## Primeiro envio
-
-O Git já está inicializado. Revise os arquivos e faça o primeiro commit:
-
-```bash
-npm run check
-git status --short
-git add .
-git commit -m "Create Prime Painting website"
-git push -u origin master
-```
-
-O comando de push pressupõe que `origin` já está configurado. Caso ainda não esteja, execute `git remote add origin URL_DO_REPOSITORIO` com a URL real antes do push. Se mudar o nome da branch, use o mesmo nome no push e na configuração de deploy.
-
-O `.gitignore` exclui arquivos locais de contexto, credenciais, ZIPs, `dist/`, `release/` e diretórios de ferramentas. Os arquivos originais em `context/` ficam na sua máquina e não são necessários para o site funcionar.
-
-## Desenvolvimento local
-
-Node.js 18 ou superior é necessário apenas para as ferramentas locais. Não é preciso executar `npm install`.
+Para usar as ferramentas de desenvolvimento, tenha Node.js 18 ou superior instalado. Não é necessário executar `npm install`.
 
 ```bash
 npm run dev
 ```
 
-Acesse http://127.0.0.1:4173.
+Abra http://127.0.0.1:4173. Para encerrar o servidor, pressione `Ctrl+C`.
+
+## Comandos disponíveis
+
+| Comando | Finalidade |
+| --- | --- |
+| `npm run dev` | Servir o site a partir da raiz do projeto. |
+| `npm run check` | Verificar sintaxe JavaScript, links e arquivos locais, âncoras, IDs únicos, idioma e JSON-LD. |
+| `npm run build` | Copiar os arquivos públicos para `dist/`, recriando essa pasta. |
+| `npm run preview` | Servir a pasta `dist/` após gerar o build. |
+
+O build é opcional: o deploy direto pelo Git utiliza os arquivos da raiz. A hospedagem não precisa de Node.js para servir o site.
+
+## Estrutura
+
+```text
+.
+├── index.html             # Página principal
+├── privacy.html           # Aviso de privacidade
+├── styles.css             # Estilos e layout responsivo
+├── script.js              # Menu, galeria, comparações e formulário
+├── assets/
+│   ├── brand/             # Logo atual, originais e alternativas
+│   ├── images/            # Fotos dos projetos em WebP
+│   └── favicon.svg        # Ícone do site
+├── scripts/
+│   ├── serve.mjs          # Servidor local
+│   ├── check.mjs          # Validação de referências e estrutura
+│   └── build.mjs          # Build estático opcional
+├── .htaccess              # Página inicial, cache e compressão
+├── .gitignore
+├── package.json
+└── robots.txt
+```
+
+`context/` contém o material original fornecido pela empresa e fica fora do Git. `dist/`, `release/`, ZIPs, arquivos de ambiente e diretórios locais de ferramentas também são ignorados. As imagens necessárias para executar o site estão versionadas em `assets/`.
+
+## Publicar pelo Git
+
+O repositório está organizado para publicar a **raiz** no diretório público da hospedagem, sem gerar ou enviar ZIPs.
+
+| Configuração | Valor |
+| --- | --- |
+| Branch | A mesma configurada na integração; atualmente `master` |
+| Diretório de origem | Raiz do repositório (`.`) |
+| Diretório público na hospedagem | Diretório do domínio, normalmente `public_html` |
+| Instalação de dependências | Não necessária |
+| Comando de build | Não necessário |
+| Página inicial | `index.html` |
+
+Mantenha `index.html`, `privacy.html`, `styles.css`, `script.js`, `robots.txt`, `.htaccess` e `assets/` juntos. O arquivo inicial deve ficar diretamente no diretório público, sem uma pasta intermediária.
+
+A conexão entre o repositório e a Hostinger deve estar configurada na conta de hospedagem. Um push só aciona publicação automática se essa integração estiver habilitada; o projeto não contém um pipeline próprio de deploy.
+
+### Enviar alterações
 
 ```bash
 npm run check
+git status --short
+git diff
+git add .
+git commit -m "Update Prime Painting website"
+git push origin master
 ```
 
-Valida a sintaxe do JavaScript, links e imagens locais, âncoras, IDs únicos, idioma e dados estruturados.
+Esses comandos pressupõem que o remoto `origin` está configurado e que você usa a branch `master`. Se usar outra branch, ajuste o comando de push e a configuração de publicação.
 
-## Build opcional
+Se a hospedagem ainda contém a versão PHP anterior, remova os antigos `index.php` e `privacy.php` após fazer backup. Arquivos externos ao controle do Git podem permanecer no servidor mesmo após um novo deploy.
 
-Caso outra plataforma peça uma pasta de saída com os arquivos públicos:
+### Publicação com pasta de saída
 
-```bash
-npm run build
-npm run preview
-```
+Caso outra integração exija uma pasta com apenas os arquivos públicos, execute `npm run build` e configure `dist/` como saída. Essa pasta é gerada localmente e não deve ser versionada.
 
-O build gera `dist/`, que fica fora do Git. Esse passo é opcional e não faz parte do deploy direto da raiz. A hospedagem não precisa de Node.js ou Python para servir o site.
+## Recursos do site
 
-## Funcionalidades
-
-- Layout responsivo, navegação móvel e links de ligação.
-- Serviços em painéis expansíveis, com seleção automática no formulário.
-- Três comparações de antes/depois: cozinha, gabinete do banheiro e corredor.
-- Galeria de oito projetos com filtros e ampliação em modal; navegação circular entre fotos por botões, setas do teclado e deslize horizontal no celular, respeitando o filtro ativo; fechamento por botão, Escape ou clique fora; retorno de foco ao cartão.
-- Perguntas frequentes com controles HTML nativos.
-- Formulário com validação que prepara um SMS para **+1 (689) 305-5077**.
-- Alternativa para copiar o texto no computador.
+- Navegação responsiva com menu para celular.
+- Serviços em painéis expansíveis e seleção do serviço no formulário.
+- Comparações de antes/depois de cozinha, gabinete de banheiro e corredor.
+- Portfólio com oito projetos e filtros por categoria.
+- Fotos ampliadas com botões **Previous** e **Next**, contador e navegação circular dentro do filtro selecionado.
+- Navegação da galeria pelas setas do teclado e por deslize horizontal no celular.
+- Fechamento da foto pelo botão, tecla Escape ou clique fora, com retorno do foco ao cartão de origem.
+- Perguntas frequentes, links de ligação e perfil do Instagram.
 - Página de privacidade, metadados sociais e dados estruturados `HousePainter`.
-- Sem fontes externas, rastreamento, cookies de publicidade ou embeds do Instagram.
-- Foco visível, link para pular ao conteúdo e respeito à preferência de movimento reduzido.
+- Foco visível, link para pular ao conteúdo e suporte à preferência de movimento reduzido.
 
-## Contato: funcionamento e limites
+## Formulário de contato
 
-O formulário **não envia mensagens automaticamente** e não representa uma solicitação já recebida. Os dados ficam na página até o visitante abrir seu aplicativo e confirmar o envio. Não há endpoint, serviço externo de formulário ou coleta em banco de dados. A abertura de `sms:` depende de um aplicativo compatível no dispositivo; no computador, o usuário pode copiar o texto ou ligar. A entrega real do SMS não foi testada: nenhum contato foi enviado à empresa.
+O formulário **prepara uma mensagem de SMS**, mas não envia automaticamente, não envia e-mail e não grava dados em banco de dados.
 
-Telefone: `+16893055077` em `index.html`, `script.js` e `privacy.html`.
-Instagram: https://www.instagram.com/primepaintingoficial/
+1. O visitante informa nome, cidade ou ZIP code, serviço e descrição do projeto.
+2. **Prepare my text message** gera uma mensagem na própria página.
+3. O visitante pode abrir seu aplicativo de mensagens ou copiar o texto.
+4. A empresa só recebe a mensagem quando o visitante confirma o envio no aplicativo.
 
-## Conteúdo e identidade
+O destinatário é **+1 (689) 305-5077**. A abertura do link `sms:` depende de um aplicativo compatível; copiar a mensagem e ligar são alternativas disponíveis. Nenhum SMS real foi enviado durante os testes.
 
-- Informações da empresa: `context/context.md` fornecido pelo cliente.
-- Identidade: logo original refinada em estilo chapado, sem relevo 3D, com fundo transparente, mantendo somente a casa e o nome Prime Painting, sem círculo ou serviços; paleta azul-petróleo, dourado e branco quente. Arquivos em `assets/brand/`. A seção The Prime Approach usa uma foto real do portfólio e uma composição compacta.
-- Todas as fotos apresentadas vêm dos arquivos fornecidos, sem fotos de banco ou imagens geradas.
-- Referências consultadas: https://www.newhopepainting.pro/ e https://megapropainters.com/. Textos, código e imagens próprios desses sites não foram reutilizados.
-- O Instagram não permitiu leitura automatizada nesta sessão; o site inclui o link do perfil, sem copiar publicações não verificadas.
-- Os vídeos não foram incluídos na publicação; um deles está identificado como ainda pendente de edição.
-- Não foram inventados depoimentos, avaliações, anos de experiência, garantias, licenças ou cidades específicas de atendimento.
-- As comparações usam fotos de ângulos diferentes, lado a lado, sem simular um alinhamento que não existe.
+## Manutenção de conteúdo
 
-## Ajustes após definir o domínio
+| Alteração | Arquivos |
+| --- | --- |
+| Textos, serviços, FAQ e contatos | `index.html` |
+| Cores, espaçamentos e responsividade | `styles.css` |
+| Interações, comparações e mensagem de SMS | `script.js` |
+| Política informativa de privacidade | `privacy.html` |
+| Fotos dos projetos | `assets/images/` e referências em `index.html` |
+| Logo utilizada pelo site | `assets/brand/prime-painting-flat.webp` |
+| Logo em PNG transparente | `assets/brand/prime-painting-flat.png` |
 
-O domínio final não foi fornecido. Ao defini-lo, atualize `og:image` em `index.html` para a URL HTTPS absoluta da imagem, acrescente `og:url` e um link `canonical`, e gere um `sitemap.xml` com as URLs reais. Inclua a URL do sitemap em `robots.txt`. Nenhum domínio fictício foi colocado no código. Esses ajustes não impedem a publicação.
+Ao alterar o telefone, atualize `index.html`, `script.js` e `privacy.html`, incluindo os links de ligação, SMS e dados estruturados.
 
-## Verificações
+A identidade usa azul-petróleo, dourado e branco quente. A logo atual tem estilo chapado e fundo transparente, mantendo apenas a casa e o nome **Prime Painting**. A seção **The Prime Approach** apresenta uma foto real do portfólio em uma composição compacta.
 
-- Validação local com `npm run check` e geração opcional com `npm run build`.
-- Layout conferido anteriormente no Chrome em desktop e celular, incluindo telas de 320 px.
-- Galeria testada com filtros, navegação circular, teclado, deslize no celular e retorno de foco ao fechar.
-- Formulário testado para preparar a mensagem; nenhum SMS foi enviado.
+As fotos de obras vieram do material fornecido pela empresa. As comparações mostram os ângulos originais de cada foto. O Instagram é acessado por link para [@primepaintingoficial](https://www.instagram.com/primepaintingoficial/); não há feed incorporado ou sincronização automática de publicações.
 
-Nenhum commit, push ou deploy remoto foi realizado pelo assistente.
+## Domínio e SEO
+
+Quando o domínio definitivo estiver configurado:
+
+- Atualize `og:image` em `index.html` para a URL HTTPS absoluta da imagem.
+- Adicione `og:url` e o link `canonical` com a URL real do site.
+- Crie `sitemap.xml` com as URLs públicas e indique seu endereço em `robots.txt`.
+
+O site não usa analytics, cookies de publicidade ou fontes externas.
+
+## Validação
+
+Execute `npm run check` antes de enviar alterações. Esse comando verifica referências locais e estrutura, mas não substitui a revisão visual ou o teste das interações no navegador.
+
+O layout foi conferido em desktop e celular, incluindo largura de 320 px. Também foram verificados filtros, navegação da galeria, teclado, deslize, retorno de foco, comparações e preparação da mensagem de contato.
+
+Após publicar, confira o domínio no computador e no celular, incluindo carregamento das imagens, galeria e abertura dos links de contato.
