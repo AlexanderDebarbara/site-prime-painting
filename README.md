@@ -1,6 +1,6 @@
 # Prime Painting
 
-Site institucional da **Prime Painting**, empresa de pintura residencial e comercial da região central da Flórida. O conteúdo público está em inglês.
+Site institucional da **Prime Painting**, empresa de pintura residencial e comercial sediada em **Orlando, Florida**, com atendimento na região de **Central Florida**. O conteúdo público está em inglês.
 
 Desenvolvido em **HTML, CSS e JavaScript**, com imagens locais em WebP. O site funciona como arquivos estáticos, sem PHP, banco de dados, dependências de produção ou build obrigatório.
 
