@@ -88,6 +88,7 @@ Caso outra integração exija uma pasta com apenas os arquivos públicos, execut
 ## Recursos do site
 
 - Navegação responsiva com menu para celular.
+- Entradas suaves ao rolar, com pequenos intervalos entre elementos e execução única. As animações respeitam movimento reduzido e são canceladas ao receber foco pelo teclado; sem JavaScript, o conteúdo continua visível.
 - Serviços em painéis expansíveis e seleção do serviço no formulário.
 - Comparações de antes/depois de cozinha, gabinete de banheiro e corredor.
 - Portfólio com oito projetos e filtros por categoria.

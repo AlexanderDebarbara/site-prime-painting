@@ -93,3 +93,69 @@ document.querySelector('#copy-message')?.addEventListener('click', async () => {
   catch { field.focus(); field.select(); document.querySelector('#copy-status').textContent = 'Select and copy the message above, then paste it into your messaging app.'; }
 });
 document.querySelector('#year').textContent = new Date().getFullYear();
+
+// Progressive enhancement: content stays visible if motion or browser support is unavailable.
+(() => {
+  const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
+  if (motionPreference.matches || !('IntersectionObserver' in window) || !Element.prototype.animate) return;
+
+  const targets = [...document.querySelectorAll([
+    '.hero-copy > *', '.hero-visual', '.section-heading > *',
+    '.service-photo', '.service-list > details', '.comparison > figure',
+    '.filters', '.project-card', '.about-photo', '.about-copy > *',
+    '.process-grid > article', '.faq > div:first-child', '.faq-list > details',
+    '.contact-copy > *', '.contact-form', '.footer-top', '.footer-bottom'
+  ].join(','))];
+  const running = new Map();
+  const delays = new Map();
+  // The hero unfolds more slowly; other sections keep a short stagger.
+  targets.forEach(element => {
+    const siblings = targets.filter(item => item.parentElement === element.parentElement);
+    const isHero = Boolean(element.closest('.hero'));
+    const index = siblings.indexOf(element);
+    delays.set(element, isHero
+      ? (element.matches('.hero-visual') ? 250 : 100 + index * 170)
+      : Math.min(index, 3) * 60);
+  });
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const element = entry.target;
+      observer.unobserve(element);
+      if (motionPreference.matches || element.matches(':focus-within')) return;
+      const isHero = Boolean(element.closest('.hero'));
+      const animation = element.animate([
+        { opacity: 0, translate: '0 20px' },
+        { opacity: 1, translate: '0 0' }
+      ], {
+        duration: isHero ? 1400 : 650,
+        delay: delays.get(element),
+        easing: isHero ? 'cubic-bezier(0.25, 0.1, 0.25, 1)' : 'cubic-bezier(0.22, 1, 0.36, 1)',
+        fill: 'backwards'
+      });
+      running.set(element, animation);
+      const forget = () => running.delete(element);
+      animation.addEventListener('finish', forget, { once: true });
+      animation.addEventListener('cancel', forget, { once: true });
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -24px 0px' });
+
+  targets.forEach(element => observer.observe(element));
+
+  // Keyboard users should never need to wait for an entrance animation.
+  document.addEventListener('focusin', event => {
+    targets.forEach(element => {
+      if (element.contains(event.target)) {
+        observer.unobserve(element);
+        running.get(element)?.cancel();
+      }
+    });
+  });
+  motionPreference.addEventListener('change', event => {
+    if (!event.matches) return;
+    observer.disconnect();
+    running.forEach(animation => animation.cancel());
+    running.clear();
+  });
+})();
