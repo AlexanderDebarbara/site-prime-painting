@@ -1,0 +1,16 @@
+node_modules/
+dist/
+release/
+.DS_Store
+Thumbs.db
+.env
+.env.*
+!.env.example
+*.log
+context/
+
+# Local tools and delivery artifacts
+*.zip
+.agents/
+.codex/
+.aws/
