@@ -89,12 +89,13 @@ Caso outra integração exija uma pasta com apenas os arquivos públicos, execut
 
 - Navegação responsiva com menu para celular.
 - Entradas suaves ao rolar, com pequenos intervalos entre elementos e execução única. As animações respeitam movimento reduzido e são canceladas ao receber foco pelo teclado; sem JavaScript, o conteúdo continua visível.
-- Serviços em painéis expansíveis e seleção do serviço no formulário.
-- Comparações de antes/depois de cozinha, gabinete de banheiro e corredor.
-- Portfólio com oito projetos e filtros por categoria.
+- Seis serviços em cartões abertos: gabinetes, pintura interna, pintura externa, remoção de popcorn ceiling, aplicação de textura e pintura comercial. Cada cartão seleciona o serviço no formulário.
+- Antes/depois em destaque logo após a capa, com todos os seis pares fornecidos: duas vistas da cozinha com gabinetes escuros transformados em brancos, gabinete de banheiro, corredor, sala de jantar e outra transformação de cozinha.
+- Portfólio no estilo Instagram, com cabeçalho de perfil, 15 fotos de resultados finais, quadradas em três colunas e filtros por categoria. Fotos de antes e de trabalhos em andamento não aparecem no portfólio. Os seis pares completos continuam na seção de antes/depois. O botão View Instagram abre o perfil real; a grade é local, sem sincronização automática ou contadores fictícios de curtidas/seguidores.
 - Fotos ampliadas com botões **Previous** e **Next**, contador e navegação circular dentro do filtro selecionado.
 - Navegação da galeria pelas setas do teclado e por deslize horizontal no celular.
 - Fechamento da foto pelo botão, tecla Escape ou clique fora, com retorno do foco ao cartão de origem.
+- Free estimates (orçamentos grátis) destacados na capa, navegação, serviços, FAQ e contato.
 - Perguntas frequentes, links de ligação e perfil do Instagram.
 - Página de privacidade, metadados sociais e dados estruturados `HousePainter`.
 - Foco visível, link para pular ao conteúdo e suporte à preferência de movimento reduzido.
@@ -104,7 +105,7 @@ Caso outra integração exija uma pasta com apenas os arquivos públicos, execut
 O formulário **prepara uma mensagem de SMS**, mas não envia automaticamente, não envia e-mail e não grava dados em banco de dados.
 
 1. O visitante informa nome, cidade ou ZIP code, serviço e descrição do projeto.
-2. **Prepare my text message** gera uma mensagem na própria página.
+2. **Prepare my free estimate request** gera uma mensagem na própria página.
 3. O visitante pode abrir seu aplicativo de mensagens ou copiar o texto.
 4. A empresa só recebe a mensagem quando o visitante confirma o envio no aplicativo.
 
@@ -122,11 +123,13 @@ O destinatário é **+1 (689) 305-5077**. A abertura do link `sms:` depende de u
 | Logo utilizada pelo site | `assets/brand/prime-painting-flat.webp` |
 | Logo em PNG transparente | `assets/brand/prime-painting-flat.png` |
 
+O espaço para o e-mail da empresa está reservado na seção de contato de `index.html`, no bloco `.contact-email`, com o texto **Email — Coming soon**. Quando o endereço for confirmado, substitua o elemento `.contact-email-pending` por um link `<a href="mailto:EMAIL_CONFIRMADO">EMAIL_CONFIRMADO</a>` usando o endereço real. Esse link não altera o formulário, que continua preparando solicitações por SMS.
+
 Ao alterar o telefone, atualize `index.html`, `script.js` e `privacy.html`, incluindo os links de ligação, SMS e dados estruturados.
 
 A identidade usa azul-petróleo, dourado e branco quente. A logo atual tem estilo chapado e fundo transparente, mantendo apenas a casa e o nome **Prime Painting**. A seção **The Prime Approach** apresenta uma foto real do portfólio em uma composição compacta.
 
-As fotos de obras vieram do material fornecido pela empresa. As comparações mostram os ângulos originais de cada foto. O Instagram é acessado por link para [@primepaintingoficial](https://www.instagram.com/primepaintingoficial/); não há feed incorporado ou sincronização automática de publicações.
+As fotos de obras vieram do material fornecido pela empresa. Treze fotos receberam retoques assistidos por IA para remover objetos temporários e pessoas. As versões publicadas estão em `assets/images/cleaned/`; os JPEGs originais em `context/` e os PNGs editados em `context/retouched/` ficam preservados localmente. O registro dos retoques e prompts está em `docs/photo-retouching.md`. As demais fotos foram mantidas. As comparações mostram os ângulos originais de cada foto. O Instagram é acessado por link para [@primepaintingoficial](https://www.instagram.com/primepaintingoficial/); não há feed incorporado ou sincronização automática de publicações.
 
 ## Domínio e SEO
 
@@ -135,6 +138,8 @@ Quando o domínio definitivo estiver configurado:
 - Atualize `og:image` em `index.html` para a URL HTTPS absoluta da imagem.
 - Adicione `og:url` e o link `canonical` com a URL real do site.
 - Crie `sitemap.xml` com as URLs públicas e indique seu endereço em `robots.txt`.
+
+Ao adicionar uma foto retocada, atualize as referências em `index.html` e o conjunto `cleanedPhotos` em `script.js`, usado na galeria ampliada e nas comparações.
 
 O site não usa analytics, cookies de publicidade ou fontes externas.
 

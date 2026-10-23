@@ -1,4 +1,6 @@
 'use strict';
+const cleanedPhotos = new Set(["antes1", "antes2", "antes3", "antes4", "antes5", "depois1", "depois2", "depois4", "depois5", "depois6", "portfolio7", "portfolio9", "portfolio10"]);
+const projectPhoto = name => `assets/images/${cleanedPhotos.has(name) ? 'cleaned/' : ''}${name}.webp`;
 const menu = document.querySelector('.menu-toggle');
 const navigation = document.querySelector('#navigation');
 function closeMenu() { if (!menu) return; menu.setAttribute('aria-expanded', 'false'); menu.setAttribute('aria-label', 'Open navigation'); navigation.classList.remove('is-open'); }
@@ -8,19 +10,54 @@ document.addEventListener('keydown', event => { if (event.key === 'Escape' && me
 document.addEventListener('click', event => { if (!event.target.closest('.header')) closeMenu(); });
 window.matchMedia('(min-width: 761px)').addEventListener('change', event => { if (event.matches) closeMenu(); });
 document.querySelectorAll('[data-service]').forEach(link => link.addEventListener('click', () => { document.querySelector('#service-select').value = link.dataset.service; }));
-const comparisonDescriptions = { '1': ['Kitchen before refinishing, with dark wood cabinets', 'Kitchen after refinishing, with bright white cabinets'], '3': ['Bathroom vanity before refinishing, with white cabinet doors', 'Bathroom vanity after refinishing, with dark cabinet doors'], '4': ['Hallway before painting, with yellow textured walls', 'Hallway after painting, with light neutral walls'] };
+const comparisonDescriptions = {
+  '1': ['Kitchen before refinishing, with dark wood cabinets', 'Kitchen after refinishing, with bright white cabinets'],
+  '2': ['Kitchen before refinishing, with dark cabinets viewed from the sink', 'Kitchen after refinishing, with white cabinets viewed from the sink'],
+  '3': ['Bathroom vanity before refinishing, with white cabinet doors', 'Bathroom vanity after refinishing, with dark cabinet doors'],
+  '4': ['Hallway before painting, with yellow textured walls', 'Hallway after painting, with light neutral walls'],
+  '5': ['Dining area before painting, with warm yellow walls', 'Dining area after painting, with light neutral walls'],
+  '6': ['Kitchen before refinishing, with reddish wood cabinets', 'Kitchen after refinishing, with blue-green cabinets']
+};
+const comparisonTitles = {
+  '1': 'From dark cabinets to bright white.',
+  '2': 'A brighter kitchen, from another angle.',
+  '3': 'A fresh finish for a bathroom vanity.',
+  '4': 'A lighter, more welcoming hallway.',
+  '5': 'A fresh backdrop for everyday dining.',
+  '6': 'A new color story for kitchen cabinets.'
+};
 document.querySelectorAll('[data-comparison]').forEach(button => button.addEventListener('click', () => {
   document.querySelectorAll('[data-comparison]').forEach(item => { const selected = item === button; item.classList.toggle('active', selected); item.setAttribute('aria-pressed', String(selected)); });
   const id = button.dataset.comparison;
-  [['before-image', 'antes', 0], ['after-image', 'depois', 1]].forEach(([imageId, prefix, index]) => { const img = document.getElementById(imageId); img.src = `assets/images/${prefix}${id}.webp`; img.alt = comparisonDescriptions[id][index]; });
+  document.querySelector('#transformation-title').textContent = comparisonTitles[id];
+  [['before-image', 'antes', 0], ['after-image', 'depois', 1]].forEach(([imageId, prefix, index]) => { const img = document.getElementById(imageId); img.src = projectPhoto(`${prefix}${id}`); img.alt = comparisonDescriptions[id][index]; });
+  comparisonSlider.value = '50';
+  comparison.style.setProperty('--reveal', '50%');
 }));
+const comparison = document.querySelector('.comparison');
+const comparisonSlider = document.querySelector('#comparison-slider');
+comparisonSlider.addEventListener('input', () => comparison.style.setProperty('--reveal', `${comparisonSlider.value}%`));
+function revealAt(clientX) {
+  const bounds = comparison.getBoundingClientRect();
+  const value = Math.round(Math.max(0, Math.min(100, (clientX - bounds.left) / bounds.width * 100)));
+  comparisonSlider.value = String(value);
+  comparison.style.setProperty('--reveal', `${value}%`);
+}
+comparison.addEventListener('pointerdown', event => {
+  if (event.pointerType === 'mouse' && event.button !== 0) return;
+  comparison.setPointerCapture(event.pointerId);
+  revealAt(event.clientX);
+});
+comparison.addEventListener('pointermove', event => {
+  if (comparison.hasPointerCapture(event.pointerId)) revealAt(event.clientX);
+});
 const cards = [...document.querySelectorAll('.project-card')];
 document.querySelectorAll('[data-filter]').forEach(button => button.addEventListener('click', () => {
   const category = button.dataset.filter;
   document.querySelectorAll('[data-filter]').forEach(item => { item.classList.toggle('active', item === button); item.setAttribute('aria-pressed', String(item === button)); });
   cards.forEach(card => { card.hidden = category !== 'all' && card.dataset.category !== category; });
   document.querySelector('.gallery').classList.toggle('filtered', category !== 'all');
-  document.querySelector('#gallery-status').textContent = `Showing ${cards.filter(card => !card.hidden).length} projects: ${button.textContent}.`;
+  document.querySelector('#gallery-status').textContent = `Showing ${cards.filter(card => !card.hidden).length} photos: ${button.textContent}.`;
 }));
 const lightbox = document.querySelector('#lightbox');
 let lastProject;
@@ -33,7 +70,7 @@ function showPhoto(index) {
   if (!lightboxCards.length) return;
   photoIndex = (index + lightboxCards.length) % lightboxCards.length;
   const card = lightboxCards[photoIndex];
-  lightboxImage.src = `assets/images/${card.dataset.image}.webp`;
+  lightboxImage.src = projectPhoto(card.dataset.image);
   lightboxImage.alt = card.querySelector('img').alt;
   document.querySelector('#lightbox-caption').textContent = card.dataset.title;
   document.querySelector('#lightbox-counter').textContent = `${photoIndex + 1} / ${lightboxCards.length}`;
@@ -79,7 +116,7 @@ form?.addEventListener('submit', event => {
   const name = values.get('name').trim(); const location = values.get('location').trim(); const details = values.get('details').trim();
   for (const field of ['name', 'location', 'details']) { const input = form.elements.namedItem(field); input.setCustomValidity(input.value.trim() ? '' : 'Please fill out this field.'); }
   if (!form.reportValidity()) return;
-  const message = `Hi Prime Painting! My name is ${name}.\n\nProject location: ${location}\nService: ${values.get('service')}\n\n${details}\n\nI'd like to discuss an estimate. Thank you!`;
+  const message = `Hi Prime Painting! My name is ${name}.\n\nProject location: ${location}\nService: ${values.get('service')}\n\n${details}\n\nI'd like to request a free estimate. Thank you!`;
   document.querySelector('#message-preview').value = message;
   document.querySelector('#sms-link').href = `sms:+16893055077?body=${encodeURIComponent(message)}`;
   document.querySelector('#message-result').hidden = false;
@@ -100,9 +137,9 @@ document.querySelector('#year').textContent = new Date().getFullYear();
   if (motionPreference.matches || !('IntersectionObserver' in window) || !Element.prototype.animate) return;
 
   const targets = [...document.querySelectorAll([
-    '.hero-copy > *', '.hero-visual', '.section-heading > *',
-    '.service-photo', '.service-list > details', '.comparison > figure',
-    '.filters', '.project-card', '.about-photo', '.about-copy > *',
+    '.hero-copy > *', '.hero-visual', '.specialty-card', '.section-heading > *',
+    '.service-card', '.service-estimate', '.transformation-detail', '.transformation-cta', '.comparison',
+    '.portfolio-profile', '.filters', '.project-card', '.about-photo', '.about-copy > *',
     '.process-grid > article', '.faq > div:first-child', '.faq-list > details',
     '.contact-copy > *', '.contact-form', '.footer-top', '.footer-bottom'
   ].join(','))];
