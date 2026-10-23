@@ -12,3 +12,6 @@
 .photo-nav:hover{background:#286063}
 .photo-nav:disabled{opacity:.35;cursor:default}
 @media(max-width:760px){#lightbox{padding:12px}#lightbox-image{height:58dvh}.lightbox-toolbar{gap:10px}#lightbox-caption{font-size:12px}}
+
+.footer-credit{margin-top:18px;text-align:center;font-size:11px;color:var(--muted)}
+.footer-credit a{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
