@@ -38,6 +38,21 @@ const comparisonTitles = {
   '11': 'Wood-framed doors, now crisp and white.',
   '12': 'A fresh finish for the poolside patio.'
 };
+const projectMenuPanel = document.querySelector('.project-menu-panel');
+const projectMenuToggle = document.querySelector('.project-menu-toggle');
+const selectedComparisonLabel = document.querySelector('#selected-comparison-label');
+projectMenuToggle.addEventListener('click', () => {
+  const open = projectMenuToggle.getAttribute('aria-expanded') !== 'true';
+  projectMenuToggle.setAttribute('aria-expanded', String(open));
+  projectMenuPanel.classList.toggle('is-open', open);
+});
+projectMenuPanel.addEventListener('keydown', event => {
+  if (event.key !== 'Escape' || projectMenuToggle.getAttribute('aria-expanded') !== 'true') return;
+  projectMenuToggle.setAttribute('aria-expanded', 'false');
+  projectMenuPanel.classList.remove('is-open');
+  projectMenuToggle.focus();
+});
+document.documentElement.classList.add('has-project-menu');
 document.querySelectorAll('[data-comparison]').forEach(button => button.addEventListener('click', () => {
   document.querySelectorAll('[data-comparison]').forEach(item => { const selected = item === button; item.classList.toggle('active', selected); item.setAttribute('aria-pressed', String(selected)); });
   const id = button.dataset.comparison;
@@ -45,16 +60,21 @@ document.querySelectorAll('[data-comparison]').forEach(button => button.addEvent
   [['before-image', 'antes', 0], ['after-image', 'depois', 1]].forEach(([imageId, prefix, index]) => { const img = document.getElementById(imageId); img.src = projectPhoto(`${prefix}${id}`); img.alt = comparisonDescriptions[id][index]; });
   comparisonSlider.value = '50';
   comparison.style.setProperty('--reveal', '50%');
+  selectedComparisonLabel.textContent = button.textContent.trim();
+  projectMenuToggle.setAttribute('aria-expanded', 'false');
+  projectMenuPanel.classList.remove('is-open');
+  if (window.matchMedia('(max-width: 760px)').matches) projectMenuToggle.focus({ preventScroll: true });
 }));
 const comparison = document.querySelector('.comparison');
 const comparisonSlider = document.querySelector('#comparison-slider');
 const projectMenu = document.querySelector('.transformation-showcase .project-switch');
 function syncProjectMenuHeight() {
-  projectMenu.style.maxHeight = `${Math.floor(comparison.getBoundingClientRect().height)}px`;
+  projectMenu.style.maxHeight = window.matchMedia('(max-width: 760px)').matches ? '' : `${Math.floor(comparison.getBoundingClientRect().height)}px`;
 }
 syncProjectMenuHeight();
 if ('ResizeObserver' in window) new ResizeObserver(syncProjectMenuHeight).observe(comparison);
 else window.addEventListener('resize', syncProjectMenuHeight);
+window.matchMedia('(max-width: 760px)').addEventListener('change', syncProjectMenuHeight);
 comparisonSlider.addEventListener('input', () => comparison.style.setProperty('--reveal', `${comparisonSlider.value}%`));
 function revealAt(clientX) {
   const bounds = comparison.getBoundingClientRect();
