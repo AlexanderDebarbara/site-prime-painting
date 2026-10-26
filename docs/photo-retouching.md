@@ -4,7 +4,7 @@ Method: built-in image generation tool, editing the original client photographs.
 
 Original JPEGs remain in `context/`. Full-resolution edited PNGs are saved in `context/retouched/` (both directories are local and ignored by Git). Public optimized copies live in `assets/images/cleaned/`. Original WebP copies are also retained in `assets/images/`.
 
-Edits target temporary clutter and people. The prompts require preservation of paint colors, layout, fixtures, surface texture and unfinished areas. Generative retouching is not a pixel-exact restoration; the site identifies selected photos as retouched. Images without distracting temporary objects were not regenerated.
+Edits target temporary clutter and people. The prompts require preservation of paint colors, layout, fixtures, surface texture and unfinished areas. Generative retouching is not a pixel-exact restoration. Images without distracting temporary objects were not regenerated.
 
 ## Edited assets and full prompts
 
@@ -98,3 +98,31 @@ Source: `context/portfolio10.jpeg`
 Published: `assets/images/cleaned/portfolio10.webp`
 
 Edit ONLY the supplied real property photograph to remove distracting temporary objects. Photorealistic localized object removal, NOT a renovation or restyling. Preserve EXACT original camera angle, crop, aspect ratio, perspective, architecture, cabinet door/drawer counts and hardware, paint colors, texture, existing surface condition, appliances, fixed lights and natural lighting. Do not improve, repaint, repair, add doors or change workmanship. Reconstruct only the small surfaces occluded by the removed objects using nearby textures. No new decoration. Output a single full photograph, no collage, no labels. Remove the person visible in the mirror, and remove the clutter from the bathroom vanity counter: tall left organizer and all its bottles, red speaker, toothbrush and brush holders, and small containers. Preserve both sinks, both faucets, the central black decorative vase with dark foliage and the matching small black ornaments. Preserve the black cabinetry, silver handles, walls, mirror boundaries, lighting and existing doorway/reflection geometry exactly. Fill the removed person's reflection with the actual doorway and room background, no people.
+
+### antes9
+
+Source: `context/antes9.jpeg`
+Published: `assets/images/cleaned/antes9.webp`
+
+Use case: precise-object-edit. Edit target: supplied before photo of a white double-sink bathroom vanity. Remove only temporary visual clutter: the organizer and bottles on the left of the countertop, black vases and loose toiletries by the sinks, and miscellaneous small objects reflected in the mirror. Reconstruct the empty countertop and reflection naturally. Preserve the white original cabinet and its exact doors, handles, sinks, faucets, mirror, walls, floor, lighting, camera angle, and realistic photographic texture. This is a BEFORE photo: do not repaint the vanity or make the finish look newly renovated. No added decor, text, or watermark.
+
+### depois9
+
+Source: `context/depois9.jpeg`
+Published: `assets/images/cleaned/depois9.webp`
+
+Use case: precise-object-edit. Edit target: the supplied after photo of a double-sink bathroom vanity painted dark charcoal. Make only cleanup edits: remove the person visible in the mirror and reconstruct the plain doorway/wall reflection naturally; remove the freestanding organizer of bottles at the far left and loose toiletries, brushes, black decorative vases, red object, and small containers on the countertop. Leave the countertop empty and clean. Preserve the exact dark painted cabinet, doors, hardware, sink basins, faucets, countertop shape, tile floor, wall colors, mirror, camera angle, lighting, and realistic photographic texture. Do not change the renovation result, crop, or perspective. No new decor, text, or watermark.
+
+### antes11
+
+Source: `context/antes11.jpeg`
+Published: `assets/images/cleaned/antes11.webp`
+
+Use case: precise-object-edit. Edit target: supplied BEFORE photo of natural wood-framed glass French doors. Remove only the robot vacuum and its black power cord from the lower-left floor, including any small temporary green item beside it. Reconstruct the wood-look floor and white baseboard naturally. Preserve the unpainted wood door frames and all glass panels exactly as the before condition; preserve the room, reflections, lighting, camera angle, perspective, and photographic texture. Do not whiten or repaint the doors or alter the renovation condition. No added decor, text, or watermark.
+
+### depois11
+
+Source: `context/depois11.jpeg`
+Published: `assets/images/cleaned/depois11.webp`
+
+Use case: precise-object-edit. Edit target: supplied AFTER photo of French doors painted white. Remove only the black robot vacuum and its power cord from the lower-left floor, plus the small temporary green item beside it. Reconstruct the wood-look floor and white baseboard naturally. Preserve the newly painted white door frames, glass panels, hardware, surrounding walls, floor, reflected room, lighting, camera angle, perspective, and photographic texture exactly. Do not alter the white paint finish or renovate anything further. No new decor, text, or watermark.

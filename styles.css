@@ -99,3 +99,22 @@
 .comparison-slider{position:absolute;z-index:3;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:ew-resize;touch-action:pan-y}
 .comparison:focus-within{outline:3px solid #bc8832;outline-offset:5px}
 @media(max-width:760px){.transformations .comparison{aspect-ratio:3/4}.comparison-label{bottom:10px;padding:6px 9px;font-size:8px}.comparison-label-before{left:10px}.comparison-label-after{right:10px}.comparison-handle{width:44px;height:44px;font-size:20px}}
+
+@media(max-width:760px){
+  footer{text-align:center}
+  .footer-top,.footer-bottom{flex-direction:column;align-items:center;justify-content:center}
+  .footer-top .brand{justify-content:center}
+  .footer-top p{order:initial;width:auto;text-align:center}
+  .back-top{margin-left:0}
+  .footer-bottom>div{justify-content:center;flex-wrap:wrap;gap:12px 22px}
+}
+
+/* The project list scrolls only if it grows taller than the photo. */
+.transformation-showcase{display:grid;grid-template-columns:240px minmax(0,700px);grid-template-areas:"menu preview";gap:28px;align-items:start;justify-content:center}
+.transformation-preview{grid-area:preview;min-width:0}
+.transformations .transformation-preview .comparison{width:100%}
+.transformation-showcase .project-switch{grid-area:menu;display:flex;flex-direction:column;flex-wrap:nowrap;gap:8px;overflow-y:auto;overscroll-behavior:contain;margin:0;padding:0 16px 2px 2px;border-right:1px solid var(--line);scrollbar-color:#a9b9ae transparent;scrollbar-width:thin}
+.transformation-showcase .project-menu-title{position:sticky;top:0;z-index:1;margin:0 0 3px;padding:0 0 10px;background:#eaece5;color:var(--ink);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+.transformation-showcase .project-switch button{display:block;flex:none;width:100%;min-width:0;min-height:44px;padding:10px 14px;text-align:left;line-height:1.4}
+@media(max-width:900px){.transformation-showcase{grid-template-columns:210px minmax(0,1fr);gap:20px}}
+@media(max-width:760px){.transformation-showcase{grid-template-columns:1fr;grid-template-areas:"preview" "menu";gap:24px}.transformation-showcase .project-switch{padding-right:12px}.transformation-showcase .project-menu-title{padding-bottom:8px}}

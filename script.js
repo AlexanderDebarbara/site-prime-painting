@@ -1,5 +1,5 @@
 'use strict';
-const cleanedPhotos = new Set(["antes1", "antes2", "antes3", "antes4", "antes5", "depois1", "depois2", "depois4", "depois5", "depois6", "portfolio7", "portfolio9", "portfolio10"]);
+const cleanedPhotos = new Set(["antes1", "antes2", "antes3", "antes4", "antes5", "antes9", "antes11", "depois1", "depois2", "depois4", "depois5", "depois6", "depois9", "depois11", "portfolio7", "portfolio9", "portfolio10"]);
 const projectPhoto = name => `assets/images/${cleanedPhotos.has(name) ? 'cleaned/' : ''}${name}.webp`;
 const menu = document.querySelector('.menu-toggle');
 const navigation = document.querySelector('#navigation');
@@ -16,7 +16,13 @@ const comparisonDescriptions = {
   '3': ['Bathroom vanity before refinishing, with white cabinet doors', 'Bathroom vanity after refinishing, with dark cabinet doors'],
   '4': ['Hallway before painting, with yellow textured walls', 'Hallway after painting, with light neutral walls'],
   '5': ['Dining area before painting, with warm yellow walls', 'Dining area after painting, with light neutral walls'],
-  '6': ['Kitchen before refinishing, with reddish wood cabinets', 'Kitchen after refinishing, with blue-green cabinets']
+  '6': ['Kitchen before refinishing, with reddish wood cabinets', 'Kitchen after refinishing, with blue-green cabinets'],
+  '7': ['Kitchen before refinishing, with dark cabinets', 'Kitchen after refinishing, with white cabinets'],
+  '8': ['Kitchen island before refinishing, with dark cabinets', 'Kitchen island after refinishing, with white cabinets'],
+  '9': ['Bathroom cabinet before refinishing, with a white finish', 'Bathroom cabinet after refinishing, with a dark finish'],
+  '10': ['Bathroom vanity before refinishing, with a gray finish', 'Bathroom vanity after refinishing, with a dark finish'],
+  '11': ['Interior French doors before painting, with wood frames', 'Interior French doors after painting, with white frames'],
+  '12': ['Poolside patio before refinishing, with a worn concrete surface', 'Poolside patio after refinishing, with a light, even surface']
 };
 const comparisonTitles = {
   '1': 'From dark cabinets to bright white.',
@@ -24,7 +30,13 @@ const comparisonTitles = {
   '3': 'A fresh finish for a bathroom vanity.',
   '4': 'A lighter, more welcoming hallway.',
   '5': 'A fresh backdrop for everyday dining.',
-  '6': 'A new color story for kitchen cabinets.'
+  '6': 'A new color story for kitchen cabinets.',
+  '7': 'Dark kitchen cabinets turned bright white.',
+  '8': 'A lighter finish for the kitchen island.',
+  '9': 'A bold new look for the bathroom cabinet.',
+  '10': 'Bathroom vanity, refreshed in a deeper shade.',
+  '11': 'Wood-framed doors, now crisp and white.',
+  '12': 'A fresh finish for the poolside patio.'
 };
 document.querySelectorAll('[data-comparison]').forEach(button => button.addEventListener('click', () => {
   document.querySelectorAll('[data-comparison]').forEach(item => { const selected = item === button; item.classList.toggle('active', selected); item.setAttribute('aria-pressed', String(selected)); });
@@ -36,6 +48,13 @@ document.querySelectorAll('[data-comparison]').forEach(button => button.addEvent
 }));
 const comparison = document.querySelector('.comparison');
 const comparisonSlider = document.querySelector('#comparison-slider');
+const projectMenu = document.querySelector('.transformation-showcase .project-switch');
+function syncProjectMenuHeight() {
+  projectMenu.style.maxHeight = `${Math.floor(comparison.getBoundingClientRect().height)}px`;
+}
+syncProjectMenuHeight();
+if ('ResizeObserver' in window) new ResizeObserver(syncProjectMenuHeight).observe(comparison);
+else window.addEventListener('resize', syncProjectMenuHeight);
 comparisonSlider.addEventListener('input', () => comparison.style.setProperty('--reveal', `${comparisonSlider.value}%`));
 function revealAt(clientX) {
   const bounds = comparison.getBoundingClientRect();

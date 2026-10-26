@@ -90,8 +90,8 @@ Caso outra integração exija uma pasta com apenas os arquivos públicos, execut
 - Navegação responsiva com menu para celular.
 - Entradas suaves ao rolar, com pequenos intervalos entre elementos e execução única. As animações respeitam movimento reduzido e são canceladas ao receber foco pelo teclado; sem JavaScript, o conteúdo continua visível.
 - Seis serviços em cartões abertos: gabinetes, pintura interna, pintura externa, remoção de popcorn ceiling, aplicação de textura e pintura comercial. Cada cartão seleciona o serviço no formulário.
-- Antes/depois em destaque logo após a capa, com todos os seis pares fornecidos: duas vistas da cozinha com gabinetes escuros transformados em brancos, gabinete de banheiro, corredor, sala de jantar e outra transformação de cozinha.
-- Portfólio no estilo Instagram, com cabeçalho de perfil, 15 fotos de resultados finais, quadradas em três colunas e filtros por categoria. Fotos de antes e de trabalhos em andamento não aparecem no portfólio. Os seis pares completos continuam na seção de antes/depois. O botão View Instagram abre o perfil real; a grade é local, sem sincronização automática ou contadores fictícios de curtidas/seguidores.
+- Antes/depois em destaque logo após a capa, com os 12 pares fornecidos e um controle deslizante para revelar cada transformação com mouse, toque ou teclado.
+- Portfólio no estilo Instagram, com cabeçalho de perfil, 22 fotos de resultados finais, quadradas em três colunas e filtros por categoria. Fotos de antes e de trabalhos em andamento não aparecem no portfólio. Os 12 pares completos continuam na seção de antes/depois. O botão View Instagram abre o perfil real; a grade é local, sem sincronização automática ou contadores fictícios de curtidas/seguidores.
 - Fotos ampliadas com botões **Previous** e **Next**, contador e navegação circular dentro do filtro selecionado.
 - Navegação da galeria pelas setas do teclado e por deslize horizontal no celular.
 - Fechamento da foto pelo botão, tecla Escape ou clique fora, com retorno do foco ao cartão de origem.
@@ -119,7 +119,7 @@ O destinatário é **+1 (689) 305-5077**. A abertura do link `sms:` depende de u
 | Cores, espaçamentos e responsividade | `styles.css` |
 | Interações, comparações e mensagem de SMS | `script.js` |
 | Política informativa de privacidade | `privacy.html` |
-| Fotos dos projetos | `assets/images/` e referências em `index.html` |
+| Fotos dos projetos | `assets/images/`, referências em `index.html` e descrições dos pares em `script.js` |
 | Logo utilizada pelo site | `assets/brand/prime-painting-flat.webp` |
 | Logo em PNG transparente | `assets/brand/prime-painting-flat.png` |
 
@@ -129,7 +129,7 @@ Ao alterar o telefone, atualize `index.html`, `script.js` e `privacy.html`, incl
 
 A identidade usa azul-petróleo, dourado e branco quente. A logo atual tem estilo chapado e fundo transparente, mantendo apenas a casa e o nome **Prime Painting**. A seção **The Prime Approach** apresenta uma foto real do portfólio em uma composição compacta.
 
-As fotos de obras vieram do material fornecido pela empresa. Treze fotos receberam retoques assistidos por IA para remover objetos temporários e pessoas. As versões publicadas estão em `assets/images/cleaned/`; os JPEGs originais em `context/` e os PNGs editados em `context/retouched/` ficam preservados localmente. O registro dos retoques e prompts está em `docs/photo-retouching.md`. As demais fotos foram mantidas. As comparações mostram os ângulos originais de cada foto. O Instagram é acessado por link para [@primepaintingoficial](https://www.instagram.com/primepaintingoficial/); não há feed incorporado ou sincronização automática de publicações.
+As fotos de obras vieram do material fornecido pela empresa. Dezessete fotos receberam retoques assistidos por IA para remover objetos temporários e pessoas, incluindo os novos pares do banheiro e das portas. As versões publicadas estão em `assets/images/cleaned/`; os JPEGs originais em `context/` e os PNGs editados em `context/retouched/` ficam preservados localmente. O registro dos retoques e prompts está em `docs/photo-retouching.md`. As demais fotos foram apenas convertidas para WebP. A imagem `context/capa.jpeg` é publicada como `assets/images/capa.webp` na capa e nas prévias sociais. As comparações mostram os ângulos originais de cada foto. O Instagram é acessado por link para [@primepaintingoficial](https://www.instagram.com/primepaintingoficial/); não há feed incorporado ou sincronização automática de publicações.
 
 ## Domínio e SEO
 
