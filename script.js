@@ -150,15 +150,22 @@ document.querySelector('#close-lightbox')?.addEventListener('click', closeLightb
 lightbox?.addEventListener('click', event => { if (event.target === lightbox) { const rect = lightbox.getBoundingClientRect(); if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) closeLightbox(); } });
 lightbox?.addEventListener('close', () => { touchStart = null; document.body.style.overflow = ''; lastProject?.focus(); });
 const form = document.querySelector('#project-form');
+const emailLink = document.querySelector('#email-link');
+const companyEmail = form.dataset.contactEmail.trim();
 form?.addEventListener('submit', event => {
   event.preventDefault();
   const values = new FormData(form);
   const name = values.get('name').trim(); const location = values.get('location').trim(); const details = values.get('details').trim();
   for (const field of ['name', 'location', 'details']) { const input = form.elements.namedItem(field); input.setCustomValidity(input.value.trim() ? '' : 'Please fill out this field.'); }
   if (!form.reportValidity()) return;
-  const message = `Hi Prime Painting! My name is ${name}.\n\nProject location: ${location}\nService: ${values.get('service')}\n\n${details}\n\nI'd like to request a free estimate. Thank you!`;
+  const service = values.get('service').trim();
+  const message = `Hi Prime Painting! My name is ${name}.\n\nProject location: ${location}\nService: ${service}\n\n${details}\n\nI'd like to request a free estimate. Thank you!`;
   document.querySelector('#message-preview').value = message;
   document.querySelector('#sms-link').href = `sms:+16893055077?body=${encodeURIComponent(message)}`;
+  if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(companyEmail)) {
+    emailLink.href = `mailto:${companyEmail}?subject=${encodeURIComponent(`Free estimate request — ${service} — ${location}`)}&body=${encodeURIComponent(message)}`;
+    emailLink.hidden = false;
+  }
   document.querySelector('#message-result').hidden = false;
   document.querySelector('#copy-status').textContent = '';
   document.querySelector('#message-result').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'nearest' });
@@ -166,8 +173,8 @@ form?.addEventListener('submit', event => {
 form?.addEventListener('input', event => { event.target.setCustomValidity?.(''); document.querySelector('#message-result').hidden = true; });
 document.querySelector('#copy-message')?.addEventListener('click', async () => {
   const field = document.querySelector('#message-preview');
-  try { await navigator.clipboard.writeText(field.value); document.querySelector('#copy-status').textContent = 'Copied! Paste this message into your messaging app.'; }
-  catch { field.focus(); field.select(); document.querySelector('#copy-status').textContent = 'Select and copy the message above, then paste it into your messaging app.'; }
+  try { await navigator.clipboard.writeText(field.value); document.querySelector('#copy-status').textContent = 'Copied! Paste this message into your messaging or email app.'; }
+  catch { field.focus(); field.select(); document.querySelector('#copy-status').textContent = 'Select and copy the message above, then paste it into your messaging or email app.'; }
 });
 document.querySelector('#year').textContent = new Date().getFullYear();
 

@@ -133,12 +133,15 @@
   .has-project-menu .transformation-showcase .project-menu-panel.is-open .project-switch{display:flex}
 }
 
-/* Phone number opens native call and SMS choices. */
-.contact-phone-options{display:block;width:max-content;max-width:100%}
-.contact-phone-options .contact-phone{display:inline-flex;flex-direction:column;align-items:flex-start;gap:1px;max-width:100%;cursor:pointer}
-.contact-phone-options .contact-phone small{font-family:var(--sans);font-size:10px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:var(--gold)}
-.contact-phone-options[open] .contact-phone{border-bottom-color:var(--gold)}
-.contact-phone-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
-.contact-phone-actions a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 18px;border:1px solid #a8beb5;color:var(--cream);font-size:12px;line-height:1.3}
-.contact-phone-actions a:first-child{background:var(--cream);border-color:var(--cream);color:var(--ink)}
-.contact-phone-actions a:hover{background:var(--gold);border-color:var(--gold);color:var(--ink)}
+/* Contact choices appear in a centered modal; the number remains a call link without JS. */
+.contact-phone{flex-direction:column;align-items:flex-start;gap:1px;max-width:100%;cursor:pointer}
+.contact-phone small{font-family:var(--sans);font-size:10px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:var(--gold)}
+.phone-dialog{position:fixed;width:min(420px,calc(100% - 32px));max-width:none;padding:34px;background:var(--cream);color:var(--ink);box-shadow:0 20px 70px #001c20a6}
+.phone-dialog .eyebrow{margin-bottom:14px}
+.phone-dialog h2{font-size:clamp(32px,6vw,42px)}
+.phone-dialog .phone-dialog-number{margin:17px 0 24px;color:var(--ink);font-family:var(--serif);font-size:24px}
+.phone-dialog-close{position:absolute;top:12px;right:16px;width:40px;height:40px;border:0;background:transparent;font-size:28px;line-height:1}
+.phone-dialog-actions{display:grid;gap:10px}
+.phone-dialog-actions a{display:flex;align-items:center;justify-content:center;min-height:48px;padding:12px 20px;border:1px solid var(--ink);background:var(--ink);color:var(--cream);font-size:13px}
+.phone-dialog-actions a:last-child{background:transparent;color:var(--ink)}
+.phone-dialog-actions a:hover{background:#286063;border-color:#286063;color:#fff}

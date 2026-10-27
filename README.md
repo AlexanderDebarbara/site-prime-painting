@@ -33,6 +33,7 @@ O build é opcional: o deploy direto pelo Git utiliza os arquivos da raiz. A hos
 ├── privacy.html           # Aviso de privacidade
 ├── styles.css             # Estilos e layout responsivo
 ├── script.js              # Menu, galeria, comparações e formulário
+├── phone-popup.js         # Popup de ligar ou enviar SMS
 ├── assets/
 │   ├── brand/             # Logo atual, originais e alternativas
 │   ├── images/            # Fotos dos projetos em WebP
@@ -62,11 +63,11 @@ O repositório está organizado para publicar a **raiz** no diretório público 
 | Comando de build | Não necessário |
 | Página inicial | `index.html` |
 
-Mantenha `index.html`, `privacy.html`, `styles.css`, `script.js`, `robots.txt`, `.htaccess` e `assets/` juntos. O arquivo inicial deve ficar diretamente no diretório público, sem uma pasta intermediária.
+Mantenha `index.html`, `privacy.html`, `styles.css`, `script.js`, `phone-popup.js`, `robots.txt`, `.htaccess` e `assets/` juntos. O arquivo inicial deve ficar diretamente no diretório público, sem uma pasta intermediária.
 
 A conexão entre o repositório e a Hostinger deve estar configurada na conta de hospedagem. Um push só aciona publicação automática se essa integração estiver habilitada; o projeto não contém um pipeline próprio de deploy.
 
-O HTML, CSS e JavaScript são configurados para revalidação de cache em `.htaccess`. `index.html` usa um parâmetro de versão nas referências de `styles.css` e `script.js`; ao fazer uma mudança visual ou de interação importante, atualize esse valor nos links do HTML para evitar que um navegador use arquivos antigos após o deploy.
+O HTML, CSS e JavaScript são configurados para revalidação de cache em `.htaccess`. As páginas usam um parâmetro de versão nas referências de CSS e JavaScript; ao fazer uma mudança visual ou de interação importante, atualize esse valor nos links do HTML para evitar que um navegador use arquivos antigos após o deploy.
 
 ### Enviar alterações
 
@@ -105,11 +106,11 @@ Caso outra integração exija uma pasta com apenas os arquivos públicos, execut
 
 ## Formulário de contato
 
-O formulário **prepara uma mensagem de SMS**, mas não envia automaticamente, não envia e-mail e não grava dados em banco de dados.
+O formulário **prepara uma mensagem para SMS ou e-mail**, mas não envia automaticamente nem grava dados em banco de dados. O visitante confirma o envio no aplicativo de mensagens ou de e-mail.
 
 1. O visitante informa nome, cidade ou ZIP code, serviço e descrição do projeto.
 2. **Prepare my free estimate request** gera uma mensagem na própria página.
-3. O visitante pode abrir seu aplicativo de mensagens ou copiar o texto.
+3. O visitante pode abrir seu aplicativo de mensagens, abrir um rascunho de e-mail ou copiar o texto.
 4. A empresa só recebe a mensagem quando o visitante confirma o envio no aplicativo.
 
 O destinatário é **+1 (689) 305-5077**. A abertura do link `sms:` depende de um aplicativo compatível; copiar a mensagem e ligar são alternativas disponíveis. Nenhum SMS real foi enviado durante os testes.
@@ -121,14 +122,15 @@ O destinatário é **+1 (689) 305-5077**. A abertura do link `sms:` depende de u
 | Textos, serviços, FAQ e contatos | `index.html` |
 | Cores, espaçamentos e responsividade | `styles.css` |
 | Interações, comparações e mensagem de SMS | `script.js` |
+| Popup dos links de telefone nas duas páginas | `phone-popup.js` |
 | Política informativa de privacidade | `privacy.html` |
 | Fotos dos projetos | `assets/images/`, referências em `index.html` e descrições dos pares em `script.js` |
 | Logo utilizada pelo site | `assets/brand/prime-painting-flat.webp` |
 | Logo em PNG transparente | `assets/brand/prime-painting-flat.png` |
 
-O espaço para o e-mail da empresa está reservado na seção de contato de `index.html`, no bloco `.contact-email`, com o texto **Email — Coming soon**. Quando o endereço for confirmado, substitua o elemento `.contact-email-pending` por um link `<a href="mailto:EMAIL_CONFIRMADO">EMAIL_CONFIRMADO</a>` usando o endereço real. Esse link não altera o formulário, que continua preparando solicitações por SMS.
+O destinatário de e-mail do formulário é configurado no atributo `data-contact-email` de `#project-form`, em `index.html`. O botão de e-mail só aparece quando o endereço é válido. O mesmo endereço deve ser exibido no bloco `.contact-email` como link `mailto:`.
 
-Ao alterar o telefone, atualize `index.html`, `script.js` e `privacy.html`, incluindo os links de ligação, SMS e dados estruturados.
+Ao alterar o telefone, atualize `index.html`, `script.js` e `privacy.html`, incluindo os links de ligação, SMS, popup e dados estruturados.
 
 A identidade usa azul-petróleo, dourado e branco quente. A logo atual tem estilo chapado e fundo transparente, mantendo apenas a casa e o nome **Prime Painting**. A seção **The Prime Approach** apresenta uma foto real do portfólio em uma composição compacta.
 
