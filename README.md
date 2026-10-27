@@ -93,6 +93,7 @@ Caso outra integração exija uma pasta com apenas os arquivos públicos, execut
 - Entradas suaves ao rolar, com pequenos intervalos entre elementos e execução única. As animações respeitam movimento reduzido e são canceladas ao receber foco pelo teclado; sem JavaScript, o conteúdo continua visível.
 - Seis serviços em cartões abertos: gabinetes, pintura interna, pintura externa, remoção de popcorn ceiling, aplicação de textura e pintura comercial. Cada cartão seleciona o serviço no formulário.
 - Antes/depois em destaque logo após a capa, com os 12 pares fornecidos e um controle deslizante para revelar cada transformação com mouse, toque ou teclado.
+- No projeto 3 (gabinete de banheiro), os nomes dos arquivos originais estão invertidos em relação à sequência real: `depois3` é o **antes** escuro e `antes3` é o **depois** branco. O site corrige essa ordem em `script.js` e publica apenas o resultado branco no portfólio.
 - Portfólio no estilo Instagram, com cabeçalho de perfil, 22 fotos de resultados finais, quadradas em três colunas e filtros por categoria. Fotos de antes e de trabalhos em andamento não aparecem no portfólio. Os 12 pares completos continuam na seção de antes/depois. O botão View Instagram abre o perfil real; a grade é local, sem sincronização automática ou contadores fictícios de curtidas/seguidores.
 - Fotos ampliadas com botões **Previous** e **Next**, contador e navegação circular dentro do filtro selecionado.
 - Navegação da galeria pelas setas do teclado e por deslize horizontal no celular.

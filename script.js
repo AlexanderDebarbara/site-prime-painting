@@ -13,7 +13,7 @@ document.querySelectorAll('[data-service]').forEach(link => link.addEventListene
 const comparisonDescriptions = {
   '1': ['Kitchen before refinishing, with dark wood cabinets', 'Kitchen after refinishing, with bright white cabinets'],
   '2': ['Kitchen before refinishing, with dark cabinets viewed from the sink', 'Kitchen after refinishing, with white cabinets viewed from the sink'],
-  '3': ['Bathroom vanity before refinishing, with white cabinet doors', 'Bathroom vanity after refinishing, with dark cabinet doors'],
+  '3': ['Bathroom vanity before refinishing, with dark cabinet doors', 'Bathroom vanity after refinishing, with white cabinet doors'],
   '4': ['Hallway before painting, with yellow textured walls', 'Hallway after painting, with light neutral walls'],
   '5': ['Dining area before painting, with warm yellow walls', 'Dining area after painting, with light neutral walls'],
   '6': ['Kitchen before refinishing, with reddish wood cabinets', 'Kitchen after refinishing, with blue-green cabinets'],
@@ -27,7 +27,7 @@ const comparisonDescriptions = {
 const comparisonTitles = {
   '1': 'From dark cabinets to bright white.',
   '2': 'A brighter kitchen, from another angle.',
-  '3': 'A fresh finish for a bathroom vanity.',
+  '3': 'From dark to bright white bathroom cabinets.',
   '4': 'A lighter, more welcoming hallway.',
   '5': 'A fresh backdrop for everyday dining.',
   '6': 'A new color story for kitchen cabinets.',
@@ -36,7 +36,7 @@ const comparisonTitles = {
   '9': 'A bold new look for the bathroom cabinet.',
   '10': 'Bathroom vanity, refreshed in a deeper shade.',
   '11': 'Wood-framed doors, now crisp and white.',
-  '12': 'A fresh finish for the poolside patio.'
+  '12': 'A Fresh New Look for This Pool Area'
 };
 const projectMenuPanel = document.querySelector('.project-menu-panel');
 const projectMenuToggle = document.querySelector('.project-menu-toggle');
@@ -57,7 +57,8 @@ document.querySelectorAll('[data-comparison]').forEach(button => button.addEvent
   document.querySelectorAll('[data-comparison]').forEach(item => { const selected = item === button; item.classList.toggle('active', selected); item.setAttribute('aria-pressed', String(selected)); });
   const id = button.dataset.comparison;
   document.querySelector('#transformation-title').textContent = comparisonTitles[id];
-  [['before-image', 'antes', 0], ['after-image', 'depois', 1]].forEach(([imageId, prefix, index]) => { const img = document.getElementById(imageId); img.src = projectPhoto(`${prefix}${id}`); img.alt = comparisonDescriptions[id][index]; });
+  const photoNames = id === '3' ? ['depois3', 'antes3'] : [`antes${id}`, `depois${id}`];
+  [['before-image', 0], ['after-image', 1]].forEach(([imageId, index]) => { const img = document.getElementById(imageId); img.src = projectPhoto(photoNames[index]); img.alt = comparisonDescriptions[id][index]; });
   comparisonSlider.value = '50';
   comparison.style.setProperty('--reveal', '50%');
   selectedComparisonLabel.textContent = button.textContent.trim();

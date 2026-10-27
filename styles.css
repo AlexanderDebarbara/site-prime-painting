@@ -120,7 +120,8 @@
 .transformation-showcase .project-switch button{display:block;flex:none;width:100%;min-width:0;min-height:44px;padding:10px 14px;text-align:left;line-height:1.4}
 @media(max-width:900px){.transformation-showcase{grid-template-columns:210px minmax(0,1fr);gap:20px}}
 @media(max-width:760px){
-  .transformation-showcase{grid-template-columns:1fr;grid-template-areas:"menu" "preview";gap:20px}
+  .transformation-showcase{display:flex;flex-direction:column;gap:20px}
+  .transformation-showcase .project-menu-panel,.transformation-showcase .transformation-preview{width:100%}
   .has-project-menu .project-menu-toggle{display:flex;align-items:center;gap:12px;width:100%;min-height:60px;padding:12px 16px;border:1px solid #aebdb2;background:var(--cream);text-align:left}
   .project-menu-toggle>span:first-child{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
   .project-menu-toggle strong{min-width:0;margin-left:auto;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;font-weight:600;color:var(--ink)}
