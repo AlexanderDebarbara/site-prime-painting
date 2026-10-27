@@ -8,7 +8,7 @@ for (const page of ['index.html', 'privacy.html']) {
   for (const [, link] of html.matchAll(/(?:src|href)="([^"]+)"/g)) {
     if (/^(https?:|tel:|sms:|data:)/.test(link) || link === '#') continue;
     if (link.startsWith('#')) assert(ids.includes(link.slice(1)), `${page}: missing anchor ${link}`);
-    else await access(link.split('#')[0]);
+    else await access(link.split(/[?#]/)[0]);
   }
   for (const [, data] of html.matchAll(/<script type="application\/ld\+json">(.*?)<\/script>/gs)) JSON.parse(data);
 }

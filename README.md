@@ -66,6 +66,8 @@ Mantenha `index.html`, `privacy.html`, `styles.css`, `script.js`, `robots.txt`, 
 
 A conexão entre o repositório e a Hostinger deve estar configurada na conta de hospedagem. Um push só aciona publicação automática se essa integração estiver habilitada; o projeto não contém um pipeline próprio de deploy.
 
+O HTML, CSS e JavaScript são configurados para revalidação de cache em `.htaccess`. `index.html` usa um parâmetro de versão nas referências de `styles.css` e `script.js`; ao fazer uma mudança visual ou de interação importante, atualize esse valor nos links do HTML para evitar que um navegador use arquivos antigos após o deploy.
+
 ### Enviar alterações
 
 ```bash
