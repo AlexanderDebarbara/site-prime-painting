@@ -150,8 +150,11 @@ document.querySelector('#close-lightbox')?.addEventListener('click', closeLightb
 lightbox?.addEventListener('click', event => { if (event.target === lightbox) { const rect = lightbox.getBoundingClientRect(); if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) closeLightbox(); } });
 lightbox?.addEventListener('close', () => { touchStart = null; document.body.style.overflow = ''; lastProject?.focus(); });
 const form = document.querySelector('#project-form');
-const emailLink = document.querySelector('#email-link');
-const companyEmail = form.dataset.contactEmail.trim();
+const emailSendButton = document.querySelector('#email-send');
+const emailStatus = document.querySelector('#email-status');
+const isMobileDevice = navigator.userAgentData?.mobile ?? /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+const formSubmitButton = form?.querySelector('button[type="submit"]');
+if (formSubmitButton) formSubmitButton.textContent = isMobileDevice ? 'Continue with SMS' : 'Send free estimate request by email';
 form?.addEventListener('submit', event => {
   event.preventDefault();
   const values = new FormData(form);
@@ -159,18 +162,47 @@ form?.addEventListener('submit', event => {
   for (const field of ['name', 'location', 'details']) { const input = form.elements.namedItem(field); input.setCustomValidity(input.value.trim() ? '' : 'Please fill out this field.'); }
   if (!form.reportValidity()) return;
   const service = values.get('service').trim();
-  const message = `Hi Prime Painting! My name is ${name}.\n\nProject location: ${location}\nService: ${service}\n\n${details}\n\nI'd like to request a free estimate. Thank you!`;
+  const replyEmail = values.get('email').trim();
+  const message = `Hi Prime Painting! I found you through your website and would like a free estimate.\n\nMy name is ${name}.\n${replyEmail ? `Email: ${replyEmail}\n` : ''}Project location: ${location}\nService: ${service}\n\n${details}\n\nThank you!`;
   document.querySelector('#message-preview').value = message;
-  document.querySelector('#sms-link').href = `sms:+16893055077?body=${encodeURIComponent(message)}`;
-  if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(companyEmail)) {
-    emailLink.href = `mailto:${companyEmail}?subject=${encodeURIComponent(`Free estimate request — ${service} — ${location}`)}&body=${encodeURIComponent(message)}`;
-    emailLink.hidden = false;
-  }
+  const smsBodySeparator = /iPad|iPhone|iPod/i.test(navigator.userAgent) ? '&' : '?';
+  document.querySelector('#sms-link').href = `sms:+16893055077${smsBodySeparator}body=${encodeURIComponent(message)}`;
   document.querySelector('#message-result').hidden = false;
   document.querySelector('#copy-status').textContent = '';
   document.querySelector('#message-result').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'nearest' });
+  if (isMobileDevice) document.querySelector('#sms-link').click();
+  else sendEmailRequest();
 });
-form?.addEventListener('input', event => { event.target.setCustomValidity?.(''); document.querySelector('#message-result').hidden = true; });
+form?.addEventListener('input', event => {
+  event.target.setCustomValidity?.('');
+  document.querySelector('#message-result').hidden = true;
+  emailStatus.textContent = '';
+  emailSendButton.disabled = false;
+  emailSendButton.textContent = 'Send request by email';
+});
+async function sendEmailRequest() {
+  if (emailSendButton.disabled) return;
+  const emailField = form.elements.namedItem('email');
+  emailField.setCustomValidity(emailField.value.trim() ? '' : 'Please enter your email address so we can reply.');
+  if (!form.reportValidity()) return;
+  emailSendButton.disabled = true;
+  emailStatus.textContent = 'Sending your request…';
+  try {
+    const response = await fetch('contact.php', { method: 'POST', headers: { Accept: 'application/json' }, body: new FormData(form) });
+    const result = await response.json();
+    if (!response.ok || !result.success) {
+      emailStatus.textContent = result.message || 'We could not send your request. Please try again or use SMS.';
+      emailSendButton.disabled = false;
+      return;
+    }
+    emailStatus.textContent = 'Your request was submitted to Prime Painting. We’ll reply by email.';
+    emailSendButton.textContent = 'Request sent';
+  } catch {
+    emailStatus.textContent = 'We could not send your request. Please try again or use SMS.';
+    emailSendButton.disabled = false;
+  }
+}
+emailSendButton?.addEventListener('click', sendEmailRequest);
 document.querySelector('#copy-message')?.addEventListener('click', async () => {
   const field = document.querySelector('#message-preview');
   try { await navigator.clipboard.writeText(field.value); document.querySelector('#copy-status').textContent = 'Copied! Paste this message into your messaging or email app.'; }

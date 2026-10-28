@@ -2,6 +2,11 @@
 
 const phoneDialog = document.querySelector('#phone-dialog');
 let phoneDialogTrigger = null;
+const defaultSmsMessage = 'Hi Prime Painting! I found you through your website and would like a free estimate for my project. Thank you!';
+const smsBodySeparator = /iPad|iPhone|iPod/i.test(navigator.userAgent) ? '&' : '?';
+document.querySelectorAll('[data-sms-default]').forEach(link => {
+  link.href = `sms:+16893055077${smsBodySeparator}body=${encodeURIComponent(defaultSmsMessage)}`;
+});
 
 document.querySelectorAll('[data-phone-popup]').forEach(link => {
   link.addEventListener('click', event => {

@@ -2,7 +2,7 @@
 
 Site institucional da **Prime Painting**, empresa de pintura residencial e comercial sediada em **Orlando, Florida**, com atendimento na região de **Central Florida**. O conteúdo público está em inglês.
 
-Desenvolvido em **HTML, CSS e JavaScript**, com imagens locais em WebP. O site funciona como arquivos estáticos, sem PHP, banco de dados, dependências de produção ou build obrigatório.
+Desenvolvido em **HTML, CSS e JavaScript**, com imagens locais em WebP. Um único endpoint **PHP** envia os pedidos do formulário por e-mail. Não há banco de dados, dependências de produção ou build obrigatório.
 
 ## Executar localmente
 
@@ -12,7 +12,7 @@ Para usar as ferramentas de desenvolvimento, tenha Node.js 18 ou superior instal
 npm run dev
 ```
 
-Abra http://127.0.0.1:4173. Para encerrar o servidor, pressione `Ctrl+C`.
+Abra http://127.0.0.1:4173. Para encerrar o servidor, pressione `Ctrl+C`. A prévia Node serve apenas os arquivos estáticos e bloqueia `contact.php`; para testar o envio de e-mail, use uma hospedagem com PHP e função `mail()` habilitada.
 
 ## Comandos disponíveis
 
@@ -23,7 +23,7 @@ Abra http://127.0.0.1:4173. Para encerrar o servidor, pressione `Ctrl+C`.
 | `npm run build` | Copiar os arquivos públicos para `dist/`, recriando essa pasta. |
 | `npm run preview` | Servir a pasta `dist/` após gerar o build. |
 
-O build é opcional: o deploy direto pelo Git utiliza os arquivos da raiz. A hospedagem não precisa de Node.js para servir o site.
+O build é opcional: o deploy direto pelo Git utiliza os arquivos da raiz. A hospedagem não precisa de Node.js, mas precisa executar PHP para receber o formulário.
 
 ## Estrutura
 
@@ -34,6 +34,9 @@ O build é opcional: o deploy direto pelo Git utiliza os arquivos da raiz. A hos
 ├── styles.css             # Estilos e layout responsivo
 ├── script.js              # Menu, galeria, comparações e formulário
 ├── phone-popup.js         # Popup de ligar ou enviar SMS
+├── cookie-notice.js       # Aviso de cookies e privacidade
+├── contact.php            # Recebe o formulário e envia e-mail
+├── sitemap.xml            # URLs canônicas para mecanismos de busca
 ├── assets/
 │   ├── brand/             # Logo atual, originais e alternativas
 │   ├── images/            # Fotos dos projetos em WebP
@@ -63,7 +66,7 @@ O repositório está organizado para publicar a **raiz** no diretório público 
 | Comando de build | Não necessário |
 | Página inicial | `index.html` |
 
-Mantenha `index.html`, `privacy.html`, `styles.css`, `script.js`, `phone-popup.js`, `robots.txt`, `.htaccess` e `assets/` juntos. O arquivo inicial deve ficar diretamente no diretório público, sem uma pasta intermediária.
+Mantenha `index.html`, `privacy.html`, `styles.css`, `script.js`, `phone-popup.js`, `cookie-notice.js`, `contact.php`, `robots.txt`, `sitemap.xml`, `.htaccess` e `assets/` juntos. O arquivo inicial deve ficar diretamente no diretório público, sem uma pasta intermediária.
 
 A conexão entre o repositório e a Hostinger deve estar configurada na conta de hospedagem. Um push só aciona publicação automática se essa integração estiver habilitada; o projeto não contém um pipeline próprio de deploy.
 
@@ -106,14 +109,16 @@ Caso outra integração exija uma pasta com apenas os arquivos públicos, execut
 
 ## Formulário de contato
 
-O formulário **prepara uma mensagem para SMS ou e-mail**, mas não envia automaticamente nem grava dados em banco de dados. O visitante confirma o envio no aplicativo de mensagens ou de e-mail.
+O formulário prepara uma mensagem para SMS e oferece envio direto por e-mail via `contact.php`. Não grava as mensagens em banco de dados. O endereço de e-mail do visitante é necessário apenas para o envio por e-mail, para que a empresa possa responder.
 
 1. O visitante informa nome, cidade ou ZIP code, serviço e descrição do projeto.
-2. **Prepare my free estimate request** gera uma mensagem na própria página.
-3. O visitante pode abrir seu aplicativo de mensagens, abrir um rascunho de e-mail ou copiar o texto.
-4. A empresa só recebe a mensagem quando o visitante confirma o envio no aplicativo.
+2. No celular, o botão principal abre uma mensagem SMS preparada; o visitante confirma o envio no aplicativo. No computador, ele envia o pedido por e-mail usando `contact.php` e a função `mail()`, para `contact@primepaintingorlando.com`. O e-mail do visitante é obrigatório para essa opção.
+3. As opções de SMS, e-mail e cópia da mensagem permanecem disponíveis após continuar. A identificação de celular usa a informação do navegador e pode variar conforme o aparelho.
+4. O site mostra o resultado do envio por e-mail. A confirmação indica que o servidor aceitou a mensagem para entrega; não garante que ela chegou à caixa de entrada.
 
-O destinatário é **+1 (689) 305-5077**. A abertura do link `sms:` depende de um aplicativo compatível; copiar a mensagem e ligar são alternativas disponíveis. Nenhum SMS real foi enviado durante os testes.
+O servidor valida os campos, usa um campo oculto contra spam e limita tentativas por IP com identificador hash temporário. O formulário exige o endereço de e-mail do visitante antes do envio por e-mail. Configure e teste a função `mail()` na Hostinger após publicar; confira também a pasta de spam. Se a entrega falhar ou for inconsistente, substitua o envio por SMTP autenticado com credenciais guardadas fora do repositório.
+
+O destinatário é **+1 (689) 305-5077**. Os links de SMS do popup preparam em inglês uma mensagem dizendo que o contato veio do site e pede um orçamento; o formulário inclui a mesma origem junto com os detalhes preenchidos. A abertura e o preenchimento do SMS dependem do aplicativo e navegador do visitante; copiar a mensagem e ligar são alternativas disponíveis. Nenhum SMS real foi enviado durante os testes.
 
 ## Manutenção de conteúdo
 
@@ -123,12 +128,14 @@ O destinatário é **+1 (689) 305-5077**. A abertura do link `sms:` depende de u
 | Cores, espaçamentos e responsividade | `styles.css` |
 | Interações, comparações e mensagem de SMS | `script.js` |
 | Popup dos links de telefone nas duas páginas | `phone-popup.js` |
+| Aviso de cookies e privacidade | `cookie-notice.js`, `styles.css`, `privacy.html` |
+| Envio e validação dos pedidos por e-mail | `contact.php` |
 | Política informativa de privacidade | `privacy.html` |
 | Fotos dos projetos | `assets/images/`, referências em `index.html` e descrições dos pares em `script.js` |
 | Logo utilizada pelo site | `assets/brand/prime-painting-flat.webp` |
 | Logo em PNG transparente | `assets/brand/prime-painting-flat.png` |
 
-O destinatário de e-mail do formulário é configurado no atributo `data-contact-email` de `#project-form`, em `index.html`. O botão de e-mail só aparece quando o endereço é válido. O mesmo endereço deve ser exibido no bloco `.contact-email` como link `mailto:`.
+O destinatário de e-mail é **contact@primepaintingorlando.com**, configurado em `contact.php`. O mesmo endereço aparece no bloco `.contact-email` de `index.html` e na página de privacidade. Se ele mudar, atualize também esses arquivos e os dados estruturados da página inicial.
 
 Ao alterar o telefone, atualize `index.html`, `script.js` e `privacy.html`, incluindo os links de ligação, SMS, popup e dados estruturados.
 
@@ -138,15 +145,17 @@ As fotos de obras vieram do material fornecido pela empresa. Dezessete fotos rec
 
 ## Domínio e SEO
 
-Quando o domínio definitivo estiver configurado:
+O domínio principal é `https://primepaintingorlando.com/`. As duas páginas têm URLs canônicas; `index.html` também inclui metadados sociais com URLs absolutas e dados estruturados `HousePainter`, `WebSite` e `WebPage`. O arquivo `sitemap.xml` lista as páginas canônicas, e `robots.txt` aponta para ele. Ao mudar o domínio, atualize esses arquivos e `scripts/check.mjs`.
 
-- Atualize `og:image` em `index.html` para a URL HTTPS absoluta da imagem.
-- Adicione `og:url` e o link `canonical` com a URL real do site.
-- Crie `sitemap.xml` com as URLs públicas e indique seu endereço em `robots.txt`.
+Após o deploy, confirme que `https://primepaintingorlando.com/sitemap.xml` abre normalmente. Cadastre a propriedade do domínio no Google Search Console e envie essa URL no relatório de sitemaps. Use a inspeção de URL para confirmar que a página inicial pode ser rastreada e indexada. A ficha da empresa no Google Business Profile deve usar o mesmo site, telefone e informações reais de atendimento.
+
+Em 27/10/2026, um teste com o identificador textual `Googlebot` recebeu HTTP 403 na página inicial, enquanto a mesma URL abriu normalmente com um identificador de navegador. Esse teste não prova bloqueio ao Googlebot verdadeiro; verifique no Search Console e, se ele também reportar 403, revise a proteção contra bots na Hostinger. A variante `www.primepaintingorlando.com` também apresentou certificado HTTPS incompatível com o nome `www`; ajuste o SSL/DNS na Hostinger antes de usar essa variante ou redirecioná-la para o domínio principal.
+
+Termos em inglês úteis para orientar conteúdo e acompanhar no Search Console (sugestões por relevância aos serviços, sem estimativa de volume): **house painters Orlando FL**, **cabinet painting Orlando FL**, **interior painting Orlando FL**, **exterior painting Orlando FL**, **commercial painting Orlando FL**, **popcorn ceiling removal Orlando FL**, **cabinet refinishing Orlando FL** e **free painting estimate Orlando FL**. Use cada termo apenas onde o texto descreve o serviço real. Se a empresa criar páginas próprias para serviços, cada uma deve trazer fotos, explicações e informações originais daquele serviço. Não adicione uma tag `meta keywords`: o Google não a utiliza para classificação.
 
 Ao adicionar uma foto retocada, atualize as referências em `index.html` e o conjunto `cleanedPhotos` em `script.js`, usado na galeria ampliada e nas comparações.
 
-O site não usa analytics, cookies de publicidade ou fontes externas.
+O site não usa analytics, cookies de publicidade ou fontes externas. O aviso de cookies informa isso e salva apenas a confirmação no armazenamento local do navegador; ele pode ser reaberto pelo footer ou pela página de privacidade. A hospedagem pode usar tecnologia essencial para operar o site.
 
 ## Validação
 

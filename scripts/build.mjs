@@ -1,5 +1,5 @@
 import { cp, mkdir, rm } from 'node:fs/promises';
-const files = ['index.html', 'privacy.html', 'styles.css', 'script.js', 'phone-popup.js', 'robots.txt', '.htaccess', 'assets'];
+const files = ['index.html', 'privacy.html', 'styles.css', 'script.js', 'phone-popup.js', 'cookie-notice.js', 'contact.php', 'robots.txt', 'sitemap.xml', '.htaccess', 'assets'];
 await rm('dist', { recursive: true, force: true });
 await mkdir('dist', { recursive: true });
 for (const file of files) await cp(file, `dist/${file}`, { recursive: true });

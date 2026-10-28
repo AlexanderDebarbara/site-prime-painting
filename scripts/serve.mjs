@@ -11,6 +11,7 @@ const types = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=
 const server = http.createServer(async (req, res) => {
   try {
     const path = decodeURIComponent(new URL(req.url, 'http://localhost').pathname);
+    if (extname(path) === '.php') { res.writeHead(501); res.end('PHP is not available in this static preview. Test email sending on a PHP-enabled server.'); return; }
     if (path.split('/').some(part => part.startsWith('.')) || path.startsWith('/context/') || path.startsWith('/scripts/')) { res.writeHead(403); res.end('Forbidden'); return; }
     let file = resolve(root, '.' + path);
     if (file !== root && !file.startsWith(root + sep)) { res.writeHead(403); res.end('Forbidden'); return; }

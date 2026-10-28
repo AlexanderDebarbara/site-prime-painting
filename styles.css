@@ -145,3 +145,14 @@
 .phone-dialog-actions a{display:flex;align-items:center;justify-content:center;min-height:48px;padding:12px 20px;border:1px solid var(--ink);background:var(--ink);color:var(--cream);font-size:13px}
 .phone-dialog-actions a:last-child{background:transparent;color:var(--ink)}
 .phone-dialog-actions a:hover{background:#286063;border-color:#286063;color:#fff}
+
+.form-honey{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}
+#email-status:not(:empty){display:block;margin-top:12px;font-size:12px;line-height:1.5}
+#email-send:disabled{opacity:.65;cursor:default}
+
+.cookie-notice{position:fixed;z-index:1000;left:20px;right:20px;bottom:20px;max-width:760px;margin:0 auto;background:#fffdf8;color:var(--ink);border:1px solid #c6c8bd;box-shadow:0 14px 44px #102c2d33;padding:20px 24px;display:flex;align-items:center;gap:24px}
+.cookie-notice strong{font-family:var(--serif);font-size:22px;font-weight:400}
+.cookie-notice p{font-size:12px;line-height:1.6;margin-top:7px}
+.cookie-notice a{text-decoration:underline;text-underline-offset:3px}
+.cookie-notice-button{flex-shrink:0;white-space:nowrap}
+@media(max-width:560px){.cookie-notice{left:12px;right:12px;bottom:12px;display:block;padding:18px}.cookie-notice-button{margin-top:14px;width:100%}}
